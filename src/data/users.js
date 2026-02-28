@@ -1,0 +1,121 @@
+export const users = [
+	{
+		id: 1,
+		name: 'Nandani Saha Ghosh',
+		country: 'India',
+		city: 'Kolkata',
+		state: 'West Bengal',
+		artworksCount: 42,
+		role: 'Painter',
+			image: 'https://zigguratss.com/assets/upload/artist-831.jpg',
+		thumb: 'https://zigguratss.com/assets/upload/artist-831.jpg'
+		
+	},
+	{
+		id: 2,
+		name: 'Ananda Das',
+		country: 'India',
+		city: 'Delhi',
+		state: 'NCR',
+		artworksCount: 85,
+		role: 'Drawing',
+		image: 'https://zigguratss.com/assets/upload/artist-188.jpeg',
+		thumb: 'https://zigguratss.com/assets/upload/artist-188.jpeg',
+	},
+	{
+		id: 3,
+		name: 'Reena Naik',
+		country: 'India',
+		city: 'Mumbai',
+		state: 'Maharashtra',
+		artworksCount: 56,
+		role: 'Painter Digital Artist Print',
+		image: 'https://zigguratss.com/assets/upload/artist-202.JPG',
+		thumb: 'https://zigguratss.com/assets/upload/artist-202.JPG',
+	},
+	{
+		id: 4,
+		name: 'Sonaly Gandhi',
+		country: 'India',
+		city: 'Pune',
+		state: 'Maharashtra',
+		artworksCount: 91,
+		role: 'Painter Digital Artist',
+		image: 'https://zigguratss.com/assets/upload/artist-531.jpg',
+		thumb: 'https://zigguratss.com/assets/upload/artist-531.jpg',
+	},
+	{
+		id: 5,
+		name: 'Chetan Katigar',
+		country: 'India',
+		city: 'Ahmedabad',
+		state: 'Gujarat',
+		artworksCount: 37,
+		role: 'Painter',
+		image: 'https://zigguratss.com/assets/upload/artist-167.jpg',
+		thumb: 'https://zigguratss.com/assets/upload/artist-167.jpg',
+	},
+	{
+		id: 6,
+		name: 'Subrata Das',
+		country: 'India',
+		city: 'Bangalore',
+		state: 'Karnataka',
+		artworksCount: 68,
+		role: 'Abstract Artist',
+		image:
+			'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1000&auto=format&fit=crop',
+		thumb:
+			'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop',
+	},
+	{
+		id: 7,
+		name: 'Monalisa Sarkar',
+		country: 'India',
+		city: 'Patna',
+		state: 'Bihar',
+		artworksCount: 29,
+		role: 'Sculptor',
+		image:
+			'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1000&auto=format&fit=crop',
+		thumb:
+			'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop',
+	},
+	{
+		id: 8,
+		name: 'Parag Vanarse',
+		country: 'India',
+		city: 'Jaipur',
+		state: 'Rajasthan',
+		artworksCount: 112,
+		role: 'Digital Illustrator',
+		image:
+			'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1000&auto=format&fit=crop',
+		thumb:
+			'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop',
+	},
+	{
+		id: 9,
+		name: 'Richard Anbudurai',
+		country: 'India',
+		city: 'Chennai',
+		state: 'Tamil Nadu',
+		artworksCount: 74,
+		role: 'Oil Painter',
+		image:
+			'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop',
+		thumb:
+			'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
+	},
+	{
+		id: 10,
+		name: 'Aditya Dev',
+		country: 'India',
+		city: 'Hyderabad',
+		state: 'Telangana',
+		artworksCount: 53,
+		role: 'Contemporary Artist',
+		image:  'https://zigguratss.com/assets/upload/artist-222.jpg',
+		thumb: 'https://zigguratss.com/assets/upload/artist-222.jpg'
+	},
+];

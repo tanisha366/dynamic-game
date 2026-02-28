@@ -8,6 +8,7 @@ import Whatcustomersay from "./whatcustomersay";
 import Ourartworkcollection from "./ourartworkcollection";
 import Artworkasperstyle from "./artworkasperstyle";
 import ContentWinner from "./contentwinner";
+import Mostviewart from '../Mostviewart'
 
 function Hero() {
     let{active,setactive}=useContext(Appcontext)    
@@ -17,7 +18,7 @@ function Hero() {
             {active=='one'&& <Artworkcat></Artworkcat>}
             {active=="two"&& <Ournewartists></Ournewartists>}
             {active=='three'&& <Todayart></Todayart>}
-            {active=="four"&& <Mostview></Mostview>}
+            {active=="four"&& <Mostviewart></Mostviewart>}
             {active=="five"&& <Whatcustomersay></Whatcustomersay>}
             {active=="six"&& <Ourartworkcollection></Ourartworkcollection>}
             {active=="seven"&& <Artworkasperstyle></Artworkasperstyle>}     
