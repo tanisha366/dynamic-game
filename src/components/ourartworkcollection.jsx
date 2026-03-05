@@ -1,7 +1,7 @@
 function Ourartworkcollection() {
     return ( 
         <div>
-            six
+            six hello
         </div>
      );
 }
