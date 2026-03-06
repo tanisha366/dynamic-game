@@ -77,7 +77,7 @@ const Navbar = () => {
             <NavLink href="#/" label="Home" path="/" />
             <NavLink href="#/artwork" label="Artwork" type="artwork" />
             <NavLink href="#/artists" label="Artists" type="artist" />
-            <NavLink href="#/about" label="About" path="/about" />
+            <NavLink href="#/about" label="About Us" path="/about" />
             <NavLink href="#/blog" label="Blog" path="/blog" />
             <NavLink href="#/contact" label="Contact" path="/contact" />
           </div>
