@@ -4,10 +4,13 @@ import "./index.css";
 import App from "./App.jsx";
 import Navbar from "./Navbar.jsx";
 import Appcontextprovider from "./appcontext.jsx";
+import { BrowserRouter } from "react-router-dom";
 
 createRoot(document.getElementById("root")).render(
   <Appcontextprovider>
-    <Navbar/>
-    <App />
+    <BrowserRouter>
+      <Navbar />
+      <App />
+    </BrowserRouter>
   </Appcontextprovider>,
 );
