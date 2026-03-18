@@ -9,7 +9,7 @@ import { BrowserRouter } from "react-router-dom";
 createRoot(document.getElementById("root")).render(
   <Appcontextprovider>
     <BrowserRouter>
-      <Navbar />
+      {/* <Navbar /> */}
       <App />
     </BrowserRouter>
   </Appcontextprovider>,

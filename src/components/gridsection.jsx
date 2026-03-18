@@ -10,7 +10,7 @@ function Gridsection() {
       <div className="flex justify-between flex-col gap-35 ">
         <div className=" underline-animate w-fit"  onMouseEnter={() => setactive("one")}
       style={{ position: "relative"}}>
-        ARTWORK CATEGORIES
+        ARTWORK CATEGORIES link
         </div>
 
         <div className=" underline-animate w-fit " onMouseEnter={() => setactive("two")}
