@@ -1,29 +1,26 @@
-import { Routes, Route } from "react-router-dom"; 
-import Main from "./pages/main";
-import SplashCursor from "./components/splash";
-import ArtCollection from "./pages/ArtworkProductsPage";
-import BlurSlider from "./pages/Slider";
-import DesignEmbracedScroll from "./components/artworkcat";
-import ArtistPage from "./components/ournewartists";
-import Mostviewart from "./Mostviewart";
-
-
+import React from 'react'
+import Navbar from './components/Navbar'
+import Hero from './components/Hero'
+import FeaturedArtists from './components/FeaturedArtists'
+import ArtworkGallery from './components/ArtworkGallery'
+import CollectionShowcase from './components/CollectionShowcase'
+import CuratedCollections from './components/CuratedCollections'
+import Subscribe from './components/Subscribe'
+import Footer from './components/Footer'
 
 function App() {
   return (
-    <>
-      <SplashCursor />
-      <Routes>
-        {/* Default route (Home) */}
-        <Route path="/" element={<Main />} />
-        
-        <Route path="/artworks" element={<ArtCollection />} />
-        <Route path="/slider" element={<BlurSlider />} />
-         <Route path="/mostviewart" element={<Mostviewart />} />
-        <Route path="/categories" element={<DesignEmbracedScroll />} />
-      </Routes>
-    </>
-  );
+    <div className="app">
+      <Navbar />
+      <Hero />
+      <FeaturedArtists />
+      <ArtworkGallery />
+      <CollectionShowcase />
+      <CuratedCollections />
+      <Subscribe />
+      <Footer />
+    </div>
+  )
 }
 
-export default App;
+export default App

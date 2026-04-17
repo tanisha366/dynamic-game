@@ -1,0 +1,143 @@
+.subscribe {
+  padding: 100px 20px;
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
+  border-top: 1px solid rgba(168, 85, 247, 0.2);
+  border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.subscribe-container {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.subscribe-content h2 {
+  font-size: 48px;
+  font-weight: 900;
+  margin-bottom: 15px;
+}
+
+.subscribe-content > p {
+  font-size: 16px;
+  color: #aaa;
+  margin-bottom: 40px;
+}
+
+.subscribe-form {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  transition: all 0.3s ease;
+}
+
+.subscribe-form:focus-within {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #a855f7;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  color: #666;
+}
+
+.form-group input {
+  flex: 1;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-group input::placeholder {
+  color: #666;
+}
+
+.btn-subscribe {
+  padding: 12px 40px;
+  background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+}
+
+.btn-subscribe:hover:not(:disabled) {
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6);
+}
+
+.btn-subscribe.success {
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+
+.form-note {
+  font-size: 13px;
+  color: #888;
+  font-weight: 500;
+}
+
+/* Background Glows */
+.subscribe-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.glow-1 {
+  width: 400px;
+  height: 400px;
+  background: rgba(168, 85, 247, 0.4);
+  top: -100px;
+  right: -100px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.glow-2 {
+  width: 300px;
+  height: 300px;
+  background: rgba(236, 72, 153, 0.3);
+  bottom: -50px;
+  left: -50px;
+  animation: float 8s ease-in-out infinite reverse;
+}
+
+@media (max-width: 768px) {
+  .subscribe {
+    padding: 60px 20px;
+  }
+
+  .subscribe-content h2 {
+    font-size: 36px;
+  }
+
+  .subscribe-form {
+    flex-direction: column;
+  }
+
+  .btn-subscribe {
+    width: 100%;
+    justify-content: center;
+  }
+}
