@@ -369,7 +369,37 @@ function BadgesPageInner() {
         /* card grid */
         .c-grid-item { animation:cardStagger 0.5s cubic-bezier(0.34,1.2,0.64,1) both; transform-origin:center bottom; }
         .c-grid-item:hover { filter:brightness(1.05); }
-      `}</style>
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+          .c-grid-item { width: 100%; }
+          .c-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important; }
+        }
+
+        @media (max-width: 768px) {
+          h1 { font-size: clamp(32px, 7vw, 52px) !important; }
+          .f-btn { padding: 7px 14px; font-size: 12px; }
+          .s-input { width: 160px; padding: 8px 12px 8px 32px; }
+          .s-input:focus { width: 220px; }
+          .c-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important; gap: 10px !important; }
+          .sim-btn { padding: 10px 18px; font-size: 12px; gap: 6px; }
+          .s-div { margin: 28px 0 16px; }
+        }
+
+        @media (max-width: 640px) {
+          body { font-size: 14px; }
+          h1 { font-size: clamp(28px, 6vw, 40px) !important; }
+          .f-btn { padding: 6px 12px; font-size: 11px; }
+          .s-input { width: 140px; font-size: 12px; }
+          .s-input:focus { width: 100%; }
+          .c-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important; gap: 8px !important; }
+          .sim-btn { padding: 8px 14px; font-size: 11px; width: 100%; justify-content: center; }
+          .s-div { margin: 20px 0 12px; gap: 10px; }
+          .c-pill { padding: 5px 10px; font-size: 10px; }
+          [style*="padding: 24px"] { padding: 16px !important; }
+          [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; gap: 12px !important; }
+        }
+      `}
 
       <MysticBackground />
 
@@ -434,14 +464,14 @@ function BadgesPageInner() {
 
                 {/* Title */}
                 <div style={{ marginBottom:12 }}>
-                  <h1 style={{ fontSize:"clamp(38px,5.5vw,64px)", fontWeight:900,
+                  <h1 style={{ fontSize:"clamp(38px, 6vw, 64px)", fontWeight:900,
                     fontFamily:"'Orbitron','DM Sans',sans-serif", letterSpacing:"-0.04em",
                     lineHeight:1.0, margin:0, color:"#1e1b4b",
                     textShadow:"0 2px 30px rgba(99,102,241,0.2), 0 0 60px rgba(99,102,241,0.08)",
                     animation:"heroTitleA 0.7s cubic-bezier(0.34,1.56,0.64,1) both" }}>
                     YOUR
                   </h1>
-                  <h1 style={{ fontSize:"clamp(38px,5.5vw,64px)", fontWeight:900,
+                  <h1 style={{ fontSize:"clamp(38px, 6vw, 64px)", fontWeight:900,
                     fontFamily:"'Orbitron','DM Sans',sans-serif", letterSpacing:"-0.04em",
                     lineHeight:1.0, margin:0,
                     background:"linear-gradient(135deg,#4f46e5 0%,#7c3aed 35%,#0891b2 65%,#d97706 100%)",
@@ -453,7 +483,7 @@ function BadgesPageInner() {
                 </div>
 
                 {/* Rotating word + lines */}
-                <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:16 }}>
+                <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:16, flexWrap:"wrap" }}>
                   <div style={{ height:1, width:44, background:"linear-gradient(90deg,transparent,#6366f1)" }} />
                   <span style={{ fontSize:12, fontWeight:800, letterSpacing:"0.2em" }}>
                     <WordCycler words={["CONQUER.", "COLLECT.", "ASCEND.", "DOMINATE."]} />
@@ -461,7 +491,7 @@ function BadgesPageInner() {
                   <div style={{ height:1, flex:1, background:"linear-gradient(90deg,#6366f1,transparent)" }} />
                 </div>
 
-                <p style={{ color:"#64748b", fontSize:14, fontFamily:"'DM Sans',sans-serif",
+                <p style={{ color:"#64748b", fontSize:"clamp(13px, 2vw, 14px)", fontFamily:"'DM Sans',sans-serif",
                   lineHeight:1.65, maxWidth:460, animation:"fadeUp 0.6s ease 0.3s both" }}>
                   Every badge earned is a milestone in your journey.
                   <span style={{ color:"#16a34a", fontWeight:700 }}> {unlocked} unlocked</span> of {allBadges.length} —
@@ -470,13 +500,13 @@ function BadgesPageInner() {
               </div>
 
               {/* Right side */}
-              <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:12, animation:"fadeUp 0.6s ease 0.4s both" }}>
+              <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:12, animation:"fadeUp 0.6s ease 0.4s both", minWidth:200 }}>
                 {/* XP chip */}
                 <div style={{ background:"rgba(255,255,255,0.8)", backdropFilter:"blur(20px)",
                   border:"1px solid rgba(217,119,6,0.2)", borderRadius:16,
                   padding:"14px 22px", textAlign:"right",
                   boxShadow:"0 4px 20px rgba(180,83,9,0.08),inset 0 1px 0 rgba(255,255,255,0.9)" }}>
-                  <div style={{ color:"#b45309", fontSize:32, fontWeight:900, fontFamily:"'Orbitron',monospace",
+                  <div style={{ color:"#b45309", fontSize:"clamp(20px, 4vw, 32px)", fontWeight:900, fontFamily:"'Orbitron',monospace",
                     letterSpacing:"-0.04em", lineHeight:1, textShadow:"0 2px 12px rgba(180,83,9,0.2)" }}>
                     <CountUp to={MOCK_USER.xp} dur={1400} />
                   </div>
@@ -494,7 +524,7 @@ function BadgesPageInner() {
             </div>
 
             {/* Stats row */}
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12, marginBottom:28,
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(200px, 1fr))", gap:12, marginBottom:28,
               animation:"fadeUp 0.6s ease 0.2s both" }}>
               <StatCard label="Unlocked" value={unlocked} color="#16a34a" darkColor="#15803d" delay={0}
                 sub={`${Math.round(unlocked/allBadges.length*100)}% complete`}
@@ -592,7 +622,7 @@ function BadgesPageInner() {
 
           {/* Grid */}
           {filtered.length>0 ? (
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(232px,1fr))", gap:14 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(clamp(140px, calc((100vw - 48px) / 3), 232px), 1fr))", gap:14 }}>
               {filtered.map((b,i)=>(
                 <div key={b.id} className="c-grid-item" style={{ animationDelay:`${i*0.055}s` }}>
                   <BadgeCard badge={b} onSelect={setSelBadge}/>
