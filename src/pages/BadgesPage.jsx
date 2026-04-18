@@ -399,7 +399,7 @@ function BadgesPageInner() {
           [style*="padding: 24px"] { padding: 16px !important; }
           [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; gap: 12px !important; }
         }
-      `}
+      `}</style>
 
       <MysticBackground />
 
