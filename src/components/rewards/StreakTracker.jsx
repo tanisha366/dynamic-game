@@ -1,110 +1,134 @@
-// src/components/rewards/XPBar.jsx
-import { useEffect, useRef, useState } from "react";
-import { getLevelFromXP, getNextLevel, getProgressPercent, getLevelMotivation } from "../../utils/levels";
+// src/components/rewards/StreakTracker.jsx
+import { useState, useEffect } from "react";
 
-export default function XPBar({ currentXP=0 }) {
-  const [pct, setPct]     = useState(0);
-  const [xpDisp, setXpDisp] = useState(0);
-  const [hov, setHov]     = useState(false);
-  const [flash, setFlash] = useState(false);
-  const raf = useRef(null);
+const DAY_LABELS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const msg = d => d===0?"Start your streak today!":d===1?"Day 1 — the hardest step is done.":d<4?"Building momentum...":d<7?`${d} days strong — almost a full week!`:d<14?"One week+ warrior. Unstoppable.":d<30?`${d}-day streak. Pure dedication.`:"Absolute legend.";
 
-  const targetPct = getProgressPercent(currentXP);
-  const level     = getLevelFromXP(currentXP);
-  const nextLevel = getNextLevel(currentXP);
+function FlameIcon({ active, size=20 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+      style={{ filter: active ? `drop-shadow(0 0 ${size*0.25}px #f97316)` : "none" }}>
+      <path d="M12 2c0 0-5 5-5 11 0 2.76 2.24 5 5 5s5-2.24 5-5c0-3-2-5-2-5 0 0-1 3-3 3s-2-3-2-3S8 10 8 12"
+        fill={active?"#fed7aa":"none"} stroke={active?"#ea580c":"#cbd5e1"} strokeWidth="1.5" strokeLinecap="round"/>
+      <path d="M12 22C9.79 22 8 20.21 8 18c0-1.5 1-3 2-4 0 1.1.9 2 2 2s2-.9 2-2c1 1 2 2.5 2 4 0 2.21-1.79 4-4 4z"
+        fill={active?"#fb923c":"none"}/>
+    </svg>
+  );
+}
 
-  useEffect(() => {
-    setFlash(true); setTimeout(() => setFlash(false), 900);
-    const dur = 1400, s = performance.now();
-    const tick = (now) => {
-      const t = Math.min((now-s)/dur, 1), e = 1-Math.pow(1-t,4);
-      setPct(Math.round(e*targetPct)); setXpDisp(Math.round(e*currentXP));
-      if (t < 1) raf.current = requestAnimationFrame(tick);
-    };
-    raf.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf.current);
-  }, [currentXP, targetPct]);
+export default function StreakTracker({ streakDays=0 }) {
+  const [ripple, setRipple] = useState(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setTimeout(()=>setMounted(true),100); },[]);
+  const onFire = streakDays >= 3;
+
+  const today = new Date();
+  const days = Array.from({length:7},(_,i) => {
+    const d = new Date(today); d.setDate(today.getDate()-(6-i));
+    return { label:DAY_LABELS[d.getDay()===0?6:d.getDay()-1], active:(6-i)<streakDays, isToday:i===6 };
+  });
 
   return (
     <>
       <style>{`
-        @keyframes xpShim { 0%{background-position:-200% center} 100%{background-position:200% center} }
-        @keyframes xpGlow { 0%,100%{box-shadow:0 4px 24px rgba(99,102,241,0.12)} 50%{box-shadow:0 8px 40px rgba(99,102,241,0.22),0 0 0 3px rgba(99,102,241,0.08)} }
-        @keyframes lvlBounce { 0%{transform:scale(1)} 40%{transform:scale(1.2)} 100%{transform:scale(1)} }
-        @keyframes scanH { 0%{top:-1px} 100%{top:100%} }
-        .xpbar-card { transition:transform 0.3s ease,box-shadow 0.3s ease; }
-        .xpbar-card:hover { transform:translateY(-4px); }
+        @keyframes stFlame { 0%,100%{transform:scale(1) rotate(-3deg)} 50%{transform:scale(1.2) rotate(3deg)} }
+        @keyframes stNum   { 0%{transform:scale(0.5);opacity:0} 65%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
+        @keyframes stDot   { from{transform:scale(0) rotate(-45deg);opacity:0} to{transform:scale(1) rotate(0);opacity:1} }
+        @keyframes stRipple{ 0%{width:0;height:0;opacity:0.4} 100%{width:90px;height:90px;opacity:0} }
+        @keyframes stCardIn{ from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+        .stcard:hover { transform:translateY(-4px) !important; box-shadow:0 16px 48px rgba(234,88,12,0.1) !important; }
+        .stday:hover .stday-dot { transform:scale(1.18) !important; }
       `}</style>
-      <div className="xpbar-card"
+
+      {ripple && <div style={{ position:"fixed",left:ripple.x,top:ripple.y,transform:"translate(-50%,-50%)",
+        zIndex:9998,pointerEvents:"none",width:0,height:0,borderRadius:"50%",
+        background:"rgba(251,146,60,0.3)",animation:"stRipple 0.7s ease-out forwards" }}/>}
+
+      <div className="stcard"
         style={{
-          background:"rgba(255,255,255,0.72)",
-          backdropFilter:"blur(24px)",
-          border:`1px solid ${flash?"rgba(99,102,241,0.4)":"rgba(99,102,241,0.15)"}`,
-          borderRadius:20, padding:"22px 26px",
-          boxShadow: flash
-            ? "0 8px 40px rgba(99,102,241,0.18),0 0 0 4px rgba(99,102,241,0.08)"
-            : "0 4px 24px rgba(99,102,241,0.1),0 1px 0 rgba(255,255,255,0.9) inset",
-          transition:"border-color 0.4s,box-shadow 0.4s",
+          background:"rgba(255,255,255,0.82)", backdropFilter:"blur(24px)",
+          border:`1px solid ${onFire?"rgba(234,88,12,0.28)":"rgba(0,0,0,0.06)"}`,
+          borderRadius:20, padding:"22px 24px",
+          boxShadow: onFire
+            ? "0 4px 30px rgba(234,88,12,0.09),0 1px 0 rgba(255,255,255,0.9) inset"
+            : "0 4px 24px rgba(0,0,0,0.06),0 1px 0 rgba(255,255,255,0.9) inset",
+          animation:mounted?"stCardIn 0.5s ease both":"none",
+          transition:"transform 0.3s ease,box-shadow 0.3s ease",
           position:"relative",overflow:"hidden",
-        }}
-        onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}>
+        }}>
 
-        {/* scan line */}
-        <div style={{position:"absolute",left:0,right:0,height:1,
-          background:"linear-gradient(90deg,transparent,rgba(99,102,241,0.15),transparent)",
-          animation:"scanH 5s linear infinite",pointerEvents:"none"}}/>
+        {onFire && <div style={{ position:"absolute",bottom:-20,right:-20,width:130,height:130,
+          borderRadius:"50%",background:"radial-gradient(circle,rgba(251,146,60,0.1) 0%,transparent 65%)",
+          pointerEvents:"none" }}/>}
 
-        {/* Top row */}
-        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16}}>
-          <div style={{display:"flex",alignItems:"center",gap:12}}>
-            <div style={{
-              width:50,height:50,borderRadius:14,
-              background:"linear-gradient(135deg,#6366f1,#4f46e5)",
-              display:"flex",alignItems:"center",justifyContent:"center",
-              fontSize:18,fontWeight:900,color:"#fff",
-              fontFamily:"'Orbitron',monospace",
-              boxShadow:"0 4px 16px rgba(99,102,241,0.4),inset 0 1px 0 rgba(255,255,255,0.25)",
-              animation:flash?"lvlBounce 0.5s ease":"none",flexShrink:0,
-            }}>{level.level}</div>
+        {/* Header */}
+        <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:18 }}>
+          <div style={{ display:"flex",alignItems:"center",gap:10 }}>
+            <div style={{ animation:onFire?"stFlame 1.4s ease-in-out infinite":"none" }}>
+              <FlameIcon active={streakDays>0} size={28}/>
+            </div>
             <div>
-              <div style={{color:"#1e1b4b",fontSize:16,fontWeight:800,fontFamily:"'Orbitron',sans-serif",letterSpacing:"-0.01em"}}>{level.title}</div>
-              <div style={{color:"#6366f1",fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",fontFamily:"'DM Mono',monospace"}}>Level {level.level}</div>
+              <div style={{ color:"#1e1b4b",fontSize:15,fontWeight:800,fontFamily:"'DM Sans',sans-serif" }}>Daily Streak</div>
+              <div style={{ color:"#94a3b8",fontSize:12,fontFamily:"'DM Sans',sans-serif" }}>{msg(streakDays)}</div>
             </div>
           </div>
-          <div style={{textAlign:"right"}}>
-            <div style={{color:"#b45309",fontSize:22,fontWeight:900,fontFamily:"'Orbitron',monospace",letterSpacing:"-0.03em",
-              textShadow:hov?"0 0 16px rgba(180,83,9,0.3)":"none",transition:"text-shadow 0.3s"}}>
-              {xpDisp.toLocaleString()}
+          <div style={{ textAlign:"right" }}>
+            <div style={{ fontSize:36,fontWeight:900,fontFamily:"'Orbitron',monospace",lineHeight:1,letterSpacing:"-0.04em",
+              color:streakDays>0?(onFire?"#ea580c":"#6366f1"):"#e2e8f0",
+              textShadow:onFire?"0 0 24px rgba(234,88,12,0.4)":"none",
+              animation:streakDays>0?"stNum 0.6s cubic-bezier(0.34,1.56,0.64,1) both":"none" }}>
+              {streakDays}
             </div>
-            <div style={{color:"#94a3b8",fontSize:11,fontFamily:"'DM Sans',sans-serif"}}>
-              {nextLevel?`/ ${nextLevel.minXP.toLocaleString()} XP`:"MAX LEVEL"}
+            <div style={{ color:"#cbd5e1",fontSize:10,textTransform:"uppercase",letterSpacing:"0.08em",fontFamily:"'DM Sans',sans-serif" }}>
+              {streakDays===1?"day":"days"}
             </div>
           </div>
         </div>
 
-        {/* Bar */}
-        <div style={{height:10,background:"rgba(99,102,241,0.08)",borderRadius:999,border:"1px solid rgba(99,102,241,0.12)",overflow:"hidden",position:"relative"}}>
-          {[25,50,75].map(m=>(
-            <div key={m} style={{position:"absolute",left:`${m}%`,top:0,bottom:0,width:1,
-              background:pct>=m?"rgba(99,102,241,0.3)":"rgba(99,102,241,0.1)",zIndex:2}}/>
+        {/* 7-day grid */}
+        <div style={{ display:"flex",gap:6 }}>
+          {days.map((day,i) => (
+            <div key={i} className="stday"
+              style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:5,cursor:"pointer" }}
+              onClick={e => { const r=e.currentTarget.getBoundingClientRect(); setRipple({x:r.left+r.width/2,y:r.top+r.height/2}); setTimeout(()=>setRipple(null),700); }}>
+              <div className="stday-dot" style={{
+                width:"100%",maxWidth:36,aspectRatio:"1",borderRadius:10,
+                background:day.active?"linear-gradient(135deg,#fed7aa,#fb923c)":day.isToday?"rgba(99,102,241,0.08)":"rgba(0,0,0,0.03)",
+                border:day.isToday?`2px solid ${day.active?"#ea580c":"#6366f1"}`:`1px solid ${day.active?"#fb923c55":"rgba(0,0,0,0.06)"}`,
+                display:"flex",alignItems:"center",justifyContent:"center",
+                boxShadow:day.active?"0 4px 14px rgba(234,88,12,0.28),inset 0 1px 0 rgba(255,255,255,0.6)":"none",
+                transition:"transform 0.25s cubic-bezier(0.34,1.56,0.64,1)",
+                animation:day.active?`stDot 0.4s cubic-bezier(0.34,1.56,0.64,1) ${i*0.06}s both`:"none",
+              }}>
+                {day.active
+                  ? <FlameIcon active size={14}/>
+                  : <div style={{ width:5,height:5,borderRadius:"50%",background:day.isToday?"#6366f1":"rgba(0,0,0,0.1)" }}/>}
+              </div>
+              <span style={{ fontSize:9,fontFamily:"'DM Mono',monospace",textTransform:"uppercase",
+                color:day.isToday?"#6366f1":day.active?"#ea580c":"#94a3b8",fontWeight:day.isToday?700:400 }}>
+                {day.label}
+              </span>
+            </div>
           ))}
-          <div style={{
-            height:"100%",width:`${pct}%`,borderRadius:999,
-            background:"linear-gradient(90deg,#6366f1,#8b5cf6,#d97706)",
-            backgroundSize:"200% auto",animation:"xpShim 2.5s linear infinite",
-            boxShadow:"0 0 12px rgba(99,102,241,0.5)",transition:"width 0.12s linear",position:"relative",
-          }}>
-            <div style={{position:"absolute",right:0,top:"50%",transform:"translate(50%,-50%)",
-              width:10,height:10,borderRadius:"50%",background:"#d97706",
-              boxShadow:"0 0 10px #d97706,0 0 20px #d9770688"}}/>
-          </div>
         </div>
 
-        {/* Footer */}
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:10}}>
-          <span style={{color:"#94a3b8",fontSize:12,fontFamily:"'DM Sans',sans-serif",fontStyle:"italic"}}>{getLevelMotivation(currentXP)}</span>
-          {nextLevel&&<span style={{color:"#6366f1",fontSize:11,fontWeight:700,fontFamily:"'DM Mono',monospace"}}>{pct}% → {nextLevel.title}</span>}
-        </div>
+        {/* Milestone bar */}
+        {streakDays>0 && (
+          <div style={{ marginTop:14,paddingTop:12,borderTop:"1px solid rgba(0,0,0,0.05)" }}>
+            <div style={{ display:"flex",justifyContent:"space-between",marginBottom:6 }}>
+              <span style={{ color:"#94a3b8",fontSize:11,fontFamily:"'DM Sans',sans-serif" }}>Next milestone</span>
+              <span style={{ color:onFire?"#ea580c":"#6366f1",fontSize:11,fontFamily:"'DM Mono',monospace",fontWeight:600 }}>
+                {streakDays<7?`${7-streakDays}d to Week Warrior`:streakDays<30?`${30-streakDays}d to Month Master`:"Legendary!"}
+              </span>
+            </div>
+            <div style={{ height:5,background:"rgba(0,0,0,0.05)",borderRadius:999,overflow:"hidden" }}>
+              <div style={{ height:"100%",borderRadius:999,
+                width:`${Math.min(100,(streakDays/(streakDays<7?7:30))*100)}%`,
+                background:"linear-gradient(90deg,#fb923c,#ea580c)",
+                boxShadow:"0 0 8px rgba(234,88,12,0.35)",transition:"width 1.2s cubic-bezier(0.34,1.56,0.64,1)" }}/>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

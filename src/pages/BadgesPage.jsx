@@ -56,6 +56,90 @@ function MysticBG() {
   return <canvas ref={ref} style={{position:"fixed",inset:0,width:"100%",height:"100%",pointerEvents:"none",zIndex:0}}/>;
 }
 
+/* ══════════════ ANIMATED LIGHTNING BACKGROUND ══════════════ */
+function LightningBG() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const canvas = ref.current;
+    const ctx = canvas.getContext("2d");
+    let W, H, raf, t = 0;
+    const resize = () => { W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; };
+    resize();
+    window.addEventListener("resize", resize);
+
+    function drawLightning(fromX, fromY, toX, toY, branching) {
+      const dx=toX-fromX, dy=toY-fromY, dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<15||branching>4) return;
+      const cols=["rgba(99,102,241,",",rgba(139,92,246,",",rgba(168,85,247,"];
+      const col=cols[branching%3];
+      ctx.strokeStyle=col+(0.6-branching*0.13)+")";
+      ctx.lineWidth=Math.max(0.5,2.5-branching*0.5);
+      ctx.lineCap="round";
+      ctx.beginPath();
+      ctx.moveTo(fromX,fromY);
+      const nx=fromX+dx/2+Math.random()*Math.random()*40-20,ny=fromY+dy/2+Math.random()*Math.random()*40-20;
+      ctx.quadraticCurveTo(nx,ny,toX,toY);
+      ctx.stroke();
+      if(Math.random()>0.75) drawLightning(toX,toY,toX+Math.random()*60-30,toY+Math.random()*80,branching+1);
+    }
+
+    function draw(){
+      t+=0.005;
+      ctx.clearRect(0,0,W,H);
+
+      // Base gradient moving background
+      const grad=ctx.createLinearGradient(0,0,W,H*2);
+      const t2=Math.sin(t*0.3)*0.5+0.5;
+      grad.addColorStop(0,`rgba(240,245,255,${0.92+t2*0.08})`);
+      grad.addColorStop(0.4,`rgba(245,240,255,${0.90+t2*0.1})`);
+      grad.addColorStop(0.6,`rgba(240,250,255,${0.88+t2*0.12})`);
+      grad.addColorStop(1,`rgba(235,245,255,${0.90+t2*0.1})`);
+      ctx.fillStyle=grad;
+      ctx.fillRect(0,0,W,H);
+
+      // Animated moving orbs with color shift
+      const orbColors=["rgba(99,102,241,","rgba(168,85,247,","rgba(139,92,246,"];
+      for(let i=0;i<3;i++){
+        const x=W*(0.2+i*0.35)+Math.sin(t*0.4+i)*80;
+        const y=H*(0.3+Math.cos(t*0.5+i*1.5)*0.15);
+        const gr=ctx.createRadialGradient(x,y,0,x,y,160);
+        gr.addColorStop(0,orbColors[i]+(0.12+Math.sin(t*0.7+i)*0.06)+")");
+        gr.addColorStop(1,orbColors[i]+"0)");
+        ctx.fillStyle=gr;
+        ctx.beginPath();
+        ctx.arc(x,y,160,0,Math.PI*2);
+        ctx.fill();
+      }
+
+      // Random lightning bolts
+      if(Math.sin(t*3)>0.9){
+        const sx=Math.random()*W;
+        drawLightning(sx,-20,sx+Math.random()*60-30,H/4,0);
+      }
+      if(Math.sin(t*2.5+1)>0.88){
+        const sx=Math.random()*W;
+        drawLightning(sx,-10,sx+Math.random()*80-40,H/3,0);
+      }
+
+      // Accent light rays
+      if(Math.sin(t*4)>0.92){
+        ctx.strokeStyle="rgba(99,102,241,0.08)";
+        ctx.lineWidth=2;
+        const rx=Math.random()*W;
+        ctx.beginPath();
+        ctx.moveTo(rx,-10);
+        ctx.lineTo(rx+Math.random()*30-15,H*0.2);
+        ctx.stroke();
+      }
+
+      raf=requestAnimationFrame(draw);
+    }
+    draw();
+    return()=>{cancelAnimationFrame(raf);window.removeEventListener("resize",resize);};
+  },[]);
+  return <canvas ref={ref} style={{position:"fixed",inset:0,width:"100%",height:"100%",pointerEvents:"none",zIndex:0}}/>;
+}
+
 /* ══════════ COUNT UP ══════════ */
 function CountUp({ to, dur=900, delay=0 }) {
   const [v,setV]=useState(0);
@@ -215,6 +299,11 @@ function BadgesPageInner() {
         @keyframes glowPulse   { 0%,100%{box-shadow:0 4px 16px rgba(99,102,241,0.1)} 50%{box-shadow:0 8px 28px rgba(99,102,241,0.2)} }
         @keyframes nextCardIn  { from{opacity:0;transform:translateY(20px) rotateX(8deg)} to{opacity:1;transform:translateY(0) rotateX(0)} }
         @keyframes nextHover   { 0%{transform:translateY(0)} 100%{transform:translateY(-8px)} }
+        @keyframes lightning   { 0%{opacity:0} 10%{opacity:1} 15%{opacity:0} 20%{opacity:1} 25%{opacity:0} 100%{opacity:0} }
+        @keyframes lightMove   { 0%{transform:translateY(-100%)} 100%{transform:translateY(100%)} }
+        @keyframes bgGradient  { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        @keyframes statCardHover { 0%{transform:translateY(0) scale(1)} 100%{transform:translateY(-8px) scale(1.03)} }
+        @keyframes statGlow    { 0%,100%{box-shadow:0 4px 12px rgba(99,102,241,0.1),inset 0 0 0px rgba(99,102,241,0)} 50%{box-shadow:0 12px 28px rgba(99,102,241,0.25),inset 0 0 12px rgba(99,102,241,0.1)} }
 
         .tab-btn {
           padding:9px 20px;border-radius:999px;
@@ -248,7 +337,8 @@ function BadgesPageInner() {
           cursor:pointer;
         }
         .stat-card:hover {
-          transform:translateY(-6px) scale(1.02);
+          transform:translateY(-8px) scale(1.03);
+          animation:statGlow 2s ease-in-out infinite;
         }
 
         /* Secondary section - no upward movement to avoid covering headings */
@@ -260,9 +350,6 @@ function BadgesPageInner() {
           box-shadow:0 8px 28px rgba(99,102,241,0.12) !important;
         }
 
-        .stat-card { transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1); }
-        .stat-card:hover { transform:translateY(-5px) scale(1.02); }
-
         .sim-btn { display:inline-flex;align-items:center;gap:9px;padding:12px 24px;border-radius:14px;background:linear-gradient(135deg,rgba(245,158,11,0.11),rgba(180,83,9,0.06));border:1px solid rgba(245,158,11,0.3);color:#b45309;font-size:13px;font-weight:800;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);backdrop-filter:blur(12px); }
         .sim-btn:hover { transform:translateY(-3px) scale(1.04);box-shadow:0 10px 28px rgba(180,83,9,0.18);border-color:rgba(245,158,11,0.55); }
 
@@ -273,6 +360,7 @@ function BadgesPageInner() {
       `}</style>
 
       <MysticBG/>
+      <LightningBG/>
 
       {/* Page base */}
       <div style={{ position:"fixed",inset:0,zIndex:0,pointerEvents:"none",

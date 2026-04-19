@@ -1,15 +1,151 @@
 // src/mocks/badgeMock.js
-export const MOCK_USER = { name: "Tanisha", xp: 1350, streakDays: 6, level: 4 };
+// 6 badges as per design plan — Apr 17 brief
+// Rarity: Common=gray, Rare=blue, Epic=purple, Legendary=gold
+
+export const MOCK_USER = {
+  name: "Tanisha",
+  totalPoints: 1350,
+  streakDays: 6,
+  quizzesCompleted: 14,
+  subjectQuizCounts: { Math: 6, Science: 3, English: 2, History: 3 },
+  nightOwlQuizzes: 1,
+  perfectScores: 0,
+};
+
 export const badges = [
-  { id:"b001", name:"First Steps",      description:"Complete your very first quiz and begin the journey.",        icon:"star",   xpRequired:100,  xpReward:50,   tier:"bronze", unlocked:true,  unlockedAt:"2025-04-10T10:23:00Z", category:"milestone"   },
-  { id:"b002", name:"Streak Starter",   description:"Maintain a 3-day learning streak. Consistency is mastery.",  icon:"flame",  xpRequired:300,  xpReward:75,   tier:"bronze", unlocked:true,  unlockedAt:"2025-04-13T14:10:00Z", category:"streak"      },
-  { id:"b003", name:"Quiz Crusher",     description:"Score 90% or above on any quiz. Excellence recognized.",     icon:"zap",    xpRequired:500,  xpReward:100,  tier:"silver", unlocked:true,  unlockedAt:"2025-04-15T09:45:00Z", category:"performance" },
-  { id:"b004", name:"Knowledge Seeker", description:"Complete quizzes in 3 different subjects.",                  icon:"book",   xpRequired:700,  xpReward:120,  tier:"silver", unlocked:true,  unlockedAt:"2025-04-16T16:30:00Z", category:"exploration" },
-  { id:"b005", name:"Speed Demon",      description:"Finish a quiz under 2 minutes with 80%+ accuracy.",         icon:"timer",  xpRequired:900,  xpReward:150,  tier:"silver", unlocked:false, unlockedAt:null,                   category:"performance" },
-  { id:"b006", name:"Week Warrior",     description:"Maintain a perfect 7-day streak.",                          icon:"shield", xpRequired:1200, xpReward:200,  tier:"gold",   unlocked:false, unlockedAt:null,                   category:"streak"      },
-  { id:"b007", name:"Top Scholar",      description:"Reach the Top 10 on the global leaderboard.",               icon:"trophy", xpRequired:1500, xpReward:300,  tier:"gold",   unlocked:false, unlockedAt:null,                   category:"milestone"   },
-  { id:"b008", name:"Perfect Score",    description:"Achieve 100% on any quiz. Perfection is not an accident.",  icon:"award",  xpRequired:1800, xpReward:250,  tier:"gold",   unlocked:false, unlockedAt:null,                   category:"performance" },
-  { id:"b009", name:"Subject Master",   description:"Complete all quizzes in a single subject.",                  icon:"crown",  xpRequired:2200, xpReward:400,  tier:"gold",   unlocked:false, unlockedAt:null,                   category:"exploration" },
-  { id:"b010", name:"Legend",           description:"Accumulate 5000 XP. You are the stuff of myths.",           icon:"gem",    xpRequired:5000, xpReward:1000, tier:"gold",   unlocked:false, unlockedAt:null,                   category:"milestone"   },
+  {
+    id: "badge_starter_star",
+    name: "Starter Star",
+    icon: "star",
+    rarity: "common",          // Common = gray
+    description: "Complete your very first quiz and ignite the journey.",
+    unlockCondition: "Complete 1 quiz",
+    unlockConditionDetail: "Complete any quiz to earn this badge.",
+    earned: true,
+    earnedOn: "2025-04-10T09:15:00Z",
+    earnedProgress: 1,
+    totalRequired: 1,
+    xpReward: 50,
+    category: "milestone",
+  },
+  {
+    id: "badge_sharp_mind",
+    name: "Sharp Mind",
+    icon: "lightning",
+    rarity: "legendary",       // Legendary = gold (hardest)
+    description: "Achieve a perfect 100% score on any quiz. Perfection is a choice.",
+    unlockCondition: "Score 100% on a quiz",
+    unlockConditionDetail: "Answer every question correctly in a single quiz attempt.",
+    earned: false,
+    earnedOn: null,
+    earnedProgress: 0,
+    totalRequired: 1,
+    xpReward: 300,
+    category: "performance",
+  },
+  {
+    id: "badge_on_fire",
+    name: "On Fire",
+    icon: "flame",
+    rarity: "rare",            // Rare = blue
+    description: "Maintain a learning streak for 3 consecutive days.",
+    unlockCondition: "3-day streak",
+    unlockConditionDetail: "Complete at least one quiz every day for 3 days in a row.",
+    earned: true,
+    earnedOn: "2025-04-13T14:20:00Z",
+    earnedProgress: 3,
+    totalRequired: 3,
+    xpReward: 100,
+    category: "streak",
+  },
+  {
+    id: "badge_quiz_master",
+    name: "Quiz Master",
+    icon: "crown",
+    rarity: "epic",            // Epic = purple
+    description: "Complete 10 quizzes across any subject. Volume builds mastery.",
+    unlockCondition: "Complete 10 quizzes",
+    unlockConditionDetail: "Finish 10 quizzes total across any subjects.",
+    earned: true,
+    earnedOn: "2025-04-16T18:00:00Z",
+    earnedProgress: 14,
+    totalRequired: 10,
+    xpReward: 200,
+    category: "milestone",
+  },
+  {
+    id: "badge_subject_expert",
+    name: "Subject Expert",
+    icon: "book",
+    rarity: "epic",            // Epic = purple
+    description: "Complete 5 quizzes in the same subject. Depth over breadth.",
+    unlockCondition: "5 quizzes in one subject",
+    unlockConditionDetail: "Complete 5 quizzes within a single subject category.",
+    earned: false,
+    earnedOn: null,
+    earnedProgress: 6,         // Math: 6 — so almost done! (shows progress)
+    totalRequired: 5,
+    xpReward: 175,
+    category: "exploration",
+  },
+  {
+    id: "badge_night_owl",
+    name: "Night Owl",
+    icon: "moon",
+    rarity: "rare",            // Rare = blue
+    description: "Take a quiz after 10 PM. The night belongs to the dedicated.",
+    unlockCondition: "Quiz after 10 PM",
+    unlockConditionDetail: "Start and complete a quiz session after 10:00 PM.",
+    earned: false,
+    earnedOn: null,
+    earnedProgress: 0,
+    totalRequired: 1,
+    xpReward: 80,
+    category: "special",
+  },
 ];
+
+export const RARITY_CONFIG = {
+  common: {
+    label: "Common",
+    stroke: "#9CA3AF",
+    fill: "#F3F4F6",
+    textColor: "#6B7280",
+    glowColor: "rgba(156,163,175,0.4)",
+    pillBg: "rgba(156,163,175,0.12)",
+    pillBorder: "rgba(156,163,175,0.3)",
+    gradient: "linear-gradient(135deg,#F3F4F6,#E5E7EB)",
+  },
+  rare: {
+    label: "Rare",
+    stroke: "#3B82F6",
+    fill: "#EFF6FF",
+    textColor: "#1D4ED8",
+    glowColor: "rgba(59,130,246,0.45)",
+    pillBg: "rgba(59,130,246,0.1)",
+    pillBorder: "rgba(59,130,246,0.3)",
+    gradient: "linear-gradient(135deg,#EFF6FF,#DBEAFE)",
+  },
+  epic: {
+    label: "Epic",
+    stroke: "#8B5CF6",
+    fill: "#F5F3FF",
+    textColor: "#6D28D9",
+    glowColor: "rgba(139,92,246,0.45)",
+    pillBg: "rgba(139,92,246,0.1)",
+    pillBorder: "rgba(139,92,246,0.3)",
+    gradient: "linear-gradient(135deg,#F5F3FF,#EDE9FE)",
+  },
+  legendary: {
+    label: "Legendary",
+    stroke: "#F59E0B",
+    fill: "#FFFBEB",
+    textColor: "#B45309",
+    glowColor: "rgba(245,158,11,0.5)",
+    pillBg: "rgba(245,158,11,0.12)",
+    pillBorder: "rgba(245,158,11,0.35)",
+    gradient: "linear-gradient(135deg,#FFFBEB,#FEF3C7)",
+  },
+};
+
 export default badges;
