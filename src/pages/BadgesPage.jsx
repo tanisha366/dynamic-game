@@ -75,6 +75,8 @@ function Cycle({words,interval=2100}){
 
 /* ══════════ NEXT BADGE PROGRESS ══════════ */
 function NextBadgeProgress({ badges }) {
+  const [hoveredProgress, setHoveredProgress] = useState(false);
+
   // Find closest-to-unlock locked badge (highest earnedProgress/totalRequired)
   const candidates = badges
     .filter(b => !b.earned && b.totalRequired > 0)
@@ -86,12 +88,17 @@ function NextBadgeProgress({ badges }) {
   const pct = Math.min(100, Math.round((next.earnedProgress / next.totalRequired) * 100));
 
   return (
-    <div style={{
-      background:"rgba(255,255,255,0.82)",backdropFilter:"blur(24px)",
-      border:"1px solid rgba(99,102,241,0.14)",borderRadius:20,padding:"22px 26px",
-      boxShadow:"0 4px 20px rgba(99,102,241,0.08),0 1px 0 rgba(255,255,255,0.9) inset",
-      animation:"sectionIn 0.6s ease 0.3s both",
-    }}>
+    <div
+      className="section-box-last"
+      onMouseEnter={() => setHoveredProgress(true)}
+      onMouseLeave={() => setHoveredProgress(false)}
+      style={{
+        background:"rgba(255,255,255,0.82)",backdropFilter:"blur(24px)",
+        border:`1.5px solid ${hoveredProgress?cfg.stroke+"44":cfg.stroke+"22"}`,borderRadius:20,padding:"22px 26px",
+        boxShadow:hoveredProgress?`0 8px 32px ${cfg.glowColor}22,0 2px 0 rgba(255,255,255,0.9) inset`:"0 4px 20px rgba(99,102,241,0.08),0 1px 0 rgba(255,255,255,0.9) inset",
+        animation:"nextCardIn 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.3s both",
+        transition:"all 0.3s cubic-bezier(0.34,1.56,0.64,1)"
+      }}>
       <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:16}}>
         <div style={{width:6,height:6,borderRadius:"50%",background:"#6366f1",boxShadow:"0 0 8px #6366f1",animation:"dotBlink 1.5s ease-in-out infinite"}}/>
         <span style={{color:"#4f46e5",fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.15em",fontFamily:"'Orbitron',monospace"}}>
@@ -100,10 +107,10 @@ function NextBadgeProgress({ badges }) {
       </div>
 
       <div style={{display:"flex",alignItems:"center",gap:16,flexWrap:"wrap"}}>
-        <div style={{flexShrink:0}}>
+        <div style={{flexShrink:0,transform:hoveredProgress?"scale(1.08)":"scale(1)",transition:"all 0.3s ease"}}>
           <div style={{width:56,height:56,borderRadius:14,background:cfg.gradient,
             border:`1.5px solid ${cfg.stroke}44`,display:"flex",alignItems:"center",justifyContent:"center",
-            boxShadow:`0 4px 16px ${cfg.glowColor}`}}>
+            boxShadow:`0 4px 16px ${cfg.glowColor}`,transition:"all 0.3s ease"}}>
             <span style={{fontSize:20}}>{next.icon==="star"?"⭐":next.icon==="lightning"?"⚡":next.icon==="flame"?"🔥":next.icon==="crown"?"👑":next.icon==="book"?"📖":"🌙"}</span>
           </div>
         </div>
@@ -113,12 +120,12 @@ function NextBadgeProgress({ badges }) {
               <div style={{color:"#1e1b4b",fontSize:15,fontWeight:800,fontFamily:"'DM Sans',sans-serif"}}>{next.name}</div>
               <div style={{color:"#94a3b8",fontSize:12,fontFamily:"'DM Sans',sans-serif"}}>{next.unlockCondition}</div>
             </div>
-            <span style={{color:cfg.textColor,fontSize:13,fontWeight:900,fontFamily:"'Orbitron',monospace",letterSpacing:"-0.02em"}}>
+            <span style={{color:cfg.textColor,fontSize:13,fontWeight:900,fontFamily:"'Orbitron',monospace",letterSpacing:"-0.02em",transition:"all 0.3s ease",transform:hoveredProgress?"scale(1.1)":"scale(1)"}}>
               {next.earnedProgress}/{next.totalRequired}
             </span>
           </div>
           {/* Specific progress bar */}
-          <div style={{height:8,background:"rgba(99,102,241,0.09)",borderRadius:999,overflow:"hidden",border:"1px solid rgba(99,102,241,0.08)"}}>
+          <div style={{height:8,background:"rgba(99,102,241,0.09)",borderRadius:999,overflow:"hidden",border:"1px solid rgba(99,102,241,0.08)",boxShadow:hoveredProgress?`0 0 12px ${cfg.glowColor}66`:"none",transition:"all 0.3s ease"}}>
             <div style={{height:"100%",width:`${pct}%`,borderRadius:999,
               background:`linear-gradient(90deg,${cfg.stroke},${cfg.stroke}bb)`,
               boxShadow:`0 0 8px ${cfg.glowColor}`,transition:"width 1.2s cubic-bezier(0.34,1.56,0.64,1)"}}/>
@@ -142,6 +149,7 @@ function BadgesPageInner() {
   const [simBadge, setSimBadge] = useState(null);
   const [selBadge, setSelBadge] = useState(null);
   const [pageIn, setPageIn]     = useState(false);
+  const [hoveredStat, setHoveredStat] = useState(null);
 
   useEffect(() => { setTimeout(()=>setPageIn(true),80); },[]);
 
@@ -203,6 +211,10 @@ function BadgesPageInner() {
         @keyframes tabPop      { 0%{transform:scale(1)} 45%{transform:scale(1.09)} 100%{transform:scale(1)} }
         @keyframes statIn      { from{opacity:0;transform:translateY(16px) scale(0.93)} to{opacity:1;transform:translateY(0) scale(1)} }
         @keyframes scanLine    { 0%{top:-1px;opacity:.5} 100%{top:100%;opacity:.5} }
+        @keyframes statHover   { 0%{transform:translateY(0)} 100%{transform:translateY(-6px)} }
+        @keyframes glowPulse   { 0%,100%{box-shadow:0 4px 16px rgba(99,102,241,0.1)} 50%{box-shadow:0 8px 28px rgba(99,102,241,0.2)} }
+        @keyframes nextCardIn  { from{opacity:0;transform:translateY(20px) rotateX(8deg)} to{opacity:1;transform:translateY(0) rotateX(0)} }
+        @keyframes nextHover   { 0%{transform:translateY(0)} 100%{transform:translateY(-8px)} }
 
         .tab-btn {
           padding:9px 20px;border-radius:999px;
@@ -216,6 +228,37 @@ function BadgesPageInner() {
 
         .count-chip { display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:18px;padding:0 6px;border-radius:999px;background:rgba(99,102,241,0.12);color:#4f46e5;font-size:10px;font-weight:800;font-family:'DM Mono',monospace; }
         .tab-btn.active .count-chip { background:rgba(99,102,241,0.2); }
+
+        /* Card wraps and hover effects */
+        .card-wrap { animation:cardGrid 0.5s cubic-bezier(0.34,1.2,0.64,1) both; transition:all 0.3s ease; }
+        .card-wrap:hover { filter:brightness(1.08); }
+
+        /* Section hover */
+        .section-box {
+          transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+          position:relative;
+        }
+        .section-box:hover {
+          transform:translateY(-4px);
+        }
+
+        /* Stat card hover */
+        .stat-card {
+          transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+          cursor:pointer;
+        }
+        .stat-card:hover {
+          transform:translateY(-6px) scale(1.02);
+        }
+
+        /* Secondary section - no upward movement to avoid covering headings */
+        .section-box-last {
+          transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .section-box-last:hover {
+          filter:brightness(1.05);
+          box-shadow:0 8px 28px rgba(99,102,241,0.12) !important;
+        }
 
         .stat-card { transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1); }
         .stat-card:hover { transform:translateY(-5px) scale(1.02); }
@@ -406,6 +449,34 @@ function BadgesPageInner() {
           <div className="s-divider" style={{marginTop:40}}>
             <span style={{color:"#7c3aed",fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.16em",fontFamily:"'Orbitron',monospace",whiteSpace:"nowrap"}}>◈ Badge Collection</span>
             <div className="s-divline" style={{background:"linear-gradient(90deg,rgba(124,58,237,0.28),transparent)"}}/>
+          </div>
+
+          {/* Badge stats summary - Animated cards */}
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(160px, 1fr))",gap:12,marginBottom:24}}>
+            {[
+              {label:"All Badges",value:totalCount,color:"#6366f1",bg:"rgba(99,102,241,0.08)"},
+              {label:"Unlocked",value:earnedCount,color:"#16a34a",bg:"rgba(22,163,74,0.08)"},
+              {label:"Locked",value:totalCount-earnedCount,color:"#ef4444",bg:"rgba(239,68,68,0.08)"},
+            ].map((stat,i)=>(
+              <div
+                key={stat.label}
+                className="stat-card"
+                onMouseEnter={()=>setHoveredStat(stat.label)}
+                onMouseLeave={()=>setHoveredStat(null)}
+                style={{
+                  background:"rgba(255,255,255,0.78)",backdropFilter:"blur(20px)",
+                  border:`1.5px solid ${stat.color}22`,borderRadius:16,padding:"16px 12px",textAlign:"center",
+                  boxShadow:`0 4px 16px ${stat.bg}`,
+                  animation:`statIn 0.5s cubic-bezier(0.34,1.56,0.64,1) ${0.1+i*0.1}s both`,
+                  position:"relative",overflow:"hidden"
+                }}>
+                {hoveredStat===stat.label && (
+                  <div style={{position:"absolute",inset:0,background:`linear-gradient(135deg,${stat.color}08,transparent)`,pointerEvents:"none"}}/>
+                )}
+                <div style={{fontSize:24,fontWeight:900,color:stat.color,fontFamily:"'Orbitron',monospace",letterSpacing:"-0.02em",lineHeight:1}}>{stat.value}</div>
+                <div style={{fontSize:11,color:"#94a3b8",fontFamily:"'DM Sans',sans-serif",marginTop:5,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.06em"}}>{stat.label}</div>
+              </div>
+            ))}
           </div>
 
           {/* Locked message */}
