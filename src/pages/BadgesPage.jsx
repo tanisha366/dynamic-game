@@ -335,10 +335,16 @@ function BadgesPageInner() {
         .stat-card {
           transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
           cursor:pointer;
+          position:relative;
         }
         .stat-card:hover {
-          transform:translateY(-8px) scale(1.03);
-          animation:statGlow 2s ease-in-out infinite;
+          transform:translateY(-6px);
+          background:rgba(255,255,255,0.88) !important;
+          border-color:rgba(99,102,241,0.25) !important;
+          box-shadow:0 12px 28px rgba(99,102,241,0.12),inset 0 1px 0 rgba(255,255,255,0.9) !important;
+        }
+        .stat-card:hover > div:first-child {
+          transform:scale(1.08);
         }
 
         /* Secondary section - no upward movement to avoid covering headings */
@@ -481,20 +487,23 @@ function BadgesPageInner() {
             {/* Stat cards */}
             <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:28}}>
               {[
-                {label:"Badges Earned", value:earnedCount,       color:"#15803d", bg:"rgba(22,163,74,0.1)",  border:"rgba(22,163,74,0.2)",  delay:0  },
-                {label:"Locked",        value:totalCount-earnedCount, color:"#4338ca",bg:"rgba(99,102,241,0.08)",border:"rgba(99,102,241,0.18)",delay:80 },
-                {label:"Streak Days",   value:MOCK_USER.streakDays,   color:"#ea580c",bg:"rgba(234,88,12,0.08)", border:"rgba(234,88,12,0.2)",  delay:160},
-                {label:"Total XP",      value:MOCK_USER.totalPoints,  color:"#b45309",bg:"rgba(180,83,9,0.08)",  border:"rgba(180,83,9,0.2)",   delay:240},
+                {label:"Badges Earned", value:earnedCount,       icon:"⭐", delay:0  },
+                {label:"Locked",        value:totalCount-earnedCount, icon:"🔒", delay:80 },
+                {label:"Streak Days",   value:MOCK_USER.streakDays,   icon:"🔥", delay:160},
+                {label:"Total XP",      value:MOCK_USER.totalPoints,  icon:"✨", delay:240},
               ].map(s=>(
                 <div key={s.label} className="stat-card"
-                  style={{background:`rgba(255,255,255,0.8)`,backdropFilter:"blur(20px)",
-                    border:`1px solid ${s.border}`,borderRadius:16,padding:"18px 20px",
-                    boxShadow:`0 4px 16px rgba(0,0,0,0.05),inset 0 1px 0 rgba(255,255,255,0.9)`,
-                    animation:`statIn 0.6s cubic-bezier(0.34,1.56,0.64,1) ${s.delay}ms both`}}>
-                  <div style={{color:s.color,fontSize:28,fontWeight:900,fontFamily:"'Orbitron',monospace",
-                    letterSpacing:"-0.04em",lineHeight:1,marginBottom:4,
-                    textShadow:`0 2px 12px ${s.color}44`}}>
-                    <CountUp to={s.value} delay={s.delay}/>
+                  style={{background:`rgba(255,255,255,0.75)`,backdropFilter:"blur(20px)",
+                    border:`1px solid rgba(99,102,241,0.12)`,borderRadius:16,padding:"18px 20px",
+                    boxShadow:`0 4px 16px rgba(0,0,0,0.04),inset 0 1px 0 rgba(255,255,255,0.9)`,
+                    animation:`statIn 0.6s cubic-bezier(0.34,1.56,0.64,1) ${s.delay}ms both`,
+                    cursor:"pointer",transition:"all 0.3s cubic-bezier(0.34,1.56,0.64,1)"}}>
+                  <div style={{display:"flex",alignItems:"baseline",gap:10,marginBottom:8}}>
+                    <div style={{fontSize:20}}>{s.icon}</div>
+                    <div style={{color:"#4f46e5",fontSize:28,fontWeight:900,fontFamily:"'Orbitron',monospace",
+                      letterSpacing:"-0.04em",lineHeight:1}}>
+                      <CountUp to={s.value} delay={s.delay}/>
+                    </div>
                   </div>
                   <div style={{color:"#94a3b8",fontSize:11,textTransform:"uppercase",letterSpacing:"0.1em",fontFamily:"'DM Sans',sans-serif"}}>{s.label}</div>
                 </div>
@@ -528,23 +537,23 @@ function BadgesPageInner() {
 
           {/* Next badge */}
           <div className="s-divider" style={{marginTop:36}}>
-            <span style={{color:"#b45309",fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.16em",fontFamily:"'Orbitron',monospace",whiteSpace:"nowrap"}}>◈ Next Goal</span>
-            <div className="s-divline" style={{background:"linear-gradient(90deg,rgba(180,83,9,0.28),transparent)"}}/>
+            <span style={{color:"#4f46e5",fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.16em",fontFamily:"'Orbitron',monospace",whiteSpace:"nowrap"}}>◈ Next Goal</span>
+            <div className="s-divline" style={{background:"linear-gradient(90deg,rgba(99,102,241,0.25),transparent)"}}/>
           </div>
           <NextBadgeProgress badges={badges}/>
 
           {/* Badge collection */}
           <div className="s-divider" style={{marginTop:40}}>
-            <span style={{color:"#7c3aed",fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.16em",fontFamily:"'Orbitron',monospace",whiteSpace:"nowrap"}}>◈ Badge Collection</span>
-            <div className="s-divline" style={{background:"linear-gradient(90deg,rgba(124,58,237,0.28),transparent)"}}/>
+            <span style={{color:"#4f46e5",fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.16em",fontFamily:"'Orbitron',monospace",whiteSpace:"nowrap"}}>◈ Badge Collection</span>
+            <div className="s-divline" style={{background:"linear-gradient(90deg,rgba(99,102,241,0.25),transparent)"}}/>
           </div>
 
           {/* Badge stats summary - Animated cards */}
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(160px, 1fr))",gap:12,marginBottom:24}}>
             {[
-              {label:"All Badges",value:totalCount,color:"#6366f1",bg:"rgba(99,102,241,0.08)"},
-              {label:"Unlocked",value:earnedCount,color:"#16a34a",bg:"rgba(22,163,74,0.08)"},
-              {label:"Locked",value:totalCount-earnedCount,color:"#ef4444",bg:"rgba(239,68,68,0.08)"},
+              {label:"All Badges",value:totalCount,icon:"🎖️"},
+              {label:"Unlocked",value:earnedCount,icon:"✅"},
+              {label:"Locked",value:totalCount-earnedCount,icon:"🔐"},
             ].map((stat,i)=>(
               <div
                 key={stat.label}
@@ -552,16 +561,18 @@ function BadgesPageInner() {
                 onMouseEnter={()=>setHoveredStat(stat.label)}
                 onMouseLeave={()=>setHoveredStat(null)}
                 style={{
-                  background:"rgba(255,255,255,0.78)",backdropFilter:"blur(20px)",
-                  border:`1.5px solid ${stat.color}22`,borderRadius:16,padding:"16px 12px",textAlign:"center",
-                  boxShadow:`0 4px 16px ${stat.bg}`,
+                  background:"rgba(255,255,255,0.75)",backdropFilter:"blur(20px)",
+                  border:`1px solid rgba(99,102,241,0.12)`,borderRadius:16,padding:"16px 12px",textAlign:"center",
+                  boxShadow:`0 4px 16px rgba(0,0,0,0.04)`,
                   animation:`statIn 0.5s cubic-bezier(0.34,1.56,0.64,1) ${0.1+i*0.1}s both`,
-                  position:"relative",overflow:"hidden"
+                  position:"relative",overflow:"hidden",
+                  transition:"all 0.3s cubic-bezier(0.34,1.56,0.64,1)",cursor:"pointer"
                 }}>
                 {hoveredStat===stat.label && (
-                  <div style={{position:"absolute",inset:0,background:`linear-gradient(135deg,${stat.color}08,transparent)`,pointerEvents:"none"}}/>
+                  <div style={{position:"absolute",inset:0,background:`linear-gradient(135deg,rgba(99,102,241,0.06),transparent)`,pointerEvents:"none"}}/>
                 )}
-                <div style={{fontSize:24,fontWeight:900,color:stat.color,fontFamily:"'Orbitron',monospace",letterSpacing:"-0.02em",lineHeight:1}}>{stat.value}</div>
+                <div style={{fontSize:20,marginBottom:8}}>{stat.icon}</div>
+                <div style={{fontSize:24,fontWeight:900,color:"#4f46e5",fontFamily:"'Orbitron',monospace",letterSpacing:"-0.02em",lineHeight:1}}>{stat.value}</div>
                 <div style={{fontSize:11,color:"#94a3b8",fontFamily:"'DM Sans',sans-serif",marginTop:5,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.06em"}}>{stat.label}</div>
               </div>
             ))}
