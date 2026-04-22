@@ -7,10 +7,10 @@ export const MOCK_USER = {
 };
 
 export const RARITY = {
-  common:    { label:"Common",    stroke:"var(--common-stroke)",    fill:"var(--common-fill)",    glow:"var(--common-glow)",    text:"var(--common-text)",    strokeHex:"#9CA3AF", glowHex:"rgba(156,163,175,0.35)" },
+  common:    { label:"Common",    stroke:"var(--common-stroke)",    fill:"var(--common-fill)",    glow:"var(--common-glow)",    text:"var(--common-text)",    strokeHex:"#60A5FA", glowHex:"rgba(96,165,250,0.35)" },
   rare:      { label:"Rare",      stroke:"var(--rare-stroke)",      fill:"var(--rare-fill)",      glow:"var(--rare-glow)",      text:"var(--rare-text)",      strokeHex:"#3B82F6", glowHex:"rgba(59,130,246,0.4)"   },
-  epic:      { label:"Epic",      stroke:"var(--epic-stroke)",      fill:"var(--epic-fill)",      glow:"var(--epic-glow)",      text:"var(--epic-text)",      strokeHex:"#8B5CF6", glowHex:"rgba(139,92,246,0.45)"  },
-  legendary: { label:"Legendary", stroke:"var(--legendary-stroke)", fill:"var(--legendary-fill)", glow:"var(--legendary-glow)", text:"var(--legendary-text)", strokeHex:"#F59E0B", glowHex:"rgba(245,158,11,0.5)"   },
+  epic:      { label:"Epic",      stroke:"var(--epic-stroke)",      fill:"var(--epic-fill)",      glow:"var(--epic-glow)",      text:"var(--epic-text)",      strokeHex:"#1D4ED8", glowHex:"rgba(29,78,216,0.45)"  },
+  legendary: { label:"Legendary", stroke:"var(--legendary-stroke)", fill:"var(--legendary-fill)", glow:"var(--legendary-glow)", text:"var(--legendary-text)", strokeHex:"#0284C7", glowHex:"rgba(2,132,199,0.5)"   },
 };
 
 export const badges = [

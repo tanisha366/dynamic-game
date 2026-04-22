@@ -1,79 +1,87 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* ─────────────────────────────────────────
+   tokens.css  —  Shared Design System
+   Dynamic Gamification · Tanisha Rewards
+   ───────────────────────────────────────── */
 
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #0a0a0a;
-  color: #fff;
-  overflow-x: hidden;
-}
+:root {
+  /* ── Brand palette ── */
+  --primary:        #6C63FF;
+  --primary-dim:    rgba(108, 99, 255, 0.08);
+  --primary-glow:   rgba(108, 99, 255, 0.2);
+  --accent-gold:    #D97706;
+  --accent-gold-dim:rgba(217, 119, 6, 0.08);
 
-html {
-  scroll-behavior: smooth;
-}
+  /* ── Backgrounds ── */
+  --bg:             #FFFFFF;
+  --surface:        #F9FAFB;
+  --surface-2:      #F3F4F6;
+  --surface-hover:  rgba(108, 99, 255, 0.04);
 
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 10px;
-}
+  /* ── Text ── */
+  --text:           #1F2937;
+  --text-muted:     #6B7280;
+  --text-faint:     #9CA3AF;
 
-::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
+  /* ── Borders ── */
+  --border:         rgba(108, 99, 255, 0.12);
+  --border-hover:   rgba(108, 99, 255, 0.25);
 
-::-webkit-scrollbar-thumb {
-  background: #666;
-  border-radius: 5px;
-}
+  /* ── Rarity system ── */
+  --common-stroke:    #9CA3AF;
+  --common-fill:      #f3f4f6;
+  --common-glow:      rgba(156, 163, 175, 0.2);
+  --common-text:      #6B7280;
 
-::-webkit-scrollbar-thumb:hover {
-  background: #888;
-}
+  --rare-stroke:      #3B82F6;
+  --rare-fill:        #f0f9ff;
+  --rare-glow:        rgba(59, 130, 246, 0.2);
+  --rare-text:        #1d4ed8;
 
-/* Global Animations */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
+  --epic-stroke:      #8B5CF6;
+  --epic-fill:        #f5f3ff;
+  --epic-glow:        rgba(139, 92, 246, 0.2);
+  --epic-text:        #6d28d9;
 
-@keyframes glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
-  }
-}
+  --legendary-stroke: #D97706;
+  --legendary-fill:   #fffbeb;
+  --legendary-glow:   rgba(217, 119, 6, 0.2);
+  --legendary-text:   #b45309;
 
-/* Utility Classes */
-.gradient-text {
-  background: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #f97316 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+  /* ── Typography (from brief) ── */
+  --font-display: 'Inter', sans-serif;
+  --font-mono:    'Fira Code', monospace;
 
-.container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
+  --text-display: 700 3rem var(--font-display);   /* hero headings */
+  --text-h1:      700 2rem var(--font-display);    /* page titles   */
+  --text-h2:      600 1.5rem var(--font-display);  /* section heads */
+  --text-body:    400 1rem var(--font-display);    /* body text     */
+  --text-small:   400 0.875rem var(--font-display);/* labels/meta   */
 
-button {
-  cursor: pointer;
-  border: none;
-  font-family: inherit;
-  transition: all 0.3s ease;
-}
+  /* ── Spacing (multiples of 8px only) ── */
+  --sp-1: 8px;
+  --sp-2: 16px;
+  --sp-3: 24px;
+  --sp-4: 32px;
+  --sp-6: 48px;
+  --sp-8: 64px;
 
-a {
-  color: inherit;
-  text-decoration: none;
+  /* ── Radii ── */
+  --radius-btn:  8px;
+  --radius-card: 16px;
+  --radius-pill: 999px;
+
+  /* ── Shadows ── */
+  --shadow-card:  0 4px 24px rgba(0,0,0,0.4);
+  --shadow-glow:  0 0 24px var(--primary-glow);
+  --shadow-gold:  0 0 20px var(--accent-gold-dim);
+
+  /* ── Animation durations (from brief) ── */
+  --dur-micro:    150ms;
+  --dur-standard: 250ms;
+  --dur-large:    400ms;
+  --ease:         cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Focus ring ── */
+  --focus-ring: 2px solid var(--primary);
+  --focus-offset: 2px;
 }

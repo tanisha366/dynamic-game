@@ -93,7 +93,7 @@ export default function BadgeUnlockModal({ badge, onClose }) {
       {/* Overlay */}
       <div onClick={dismiss}
         style={{position:"fixed",inset:0,zIndex:10000,
-          background:"rgba(5,5,15,0.82)",backdropFilter:"blur(14px)",
+          background:"rgba(0,0,0,0.15)",backdropFilter:"blur(14px)",
           display:"flex",alignItems:"center",justifyContent:"center",padding:20,
           animation:phase>=1?"mOvIn .28s ease forwards":"mOvOut .3s ease forwards",
           opacity:phase>=1?1:0}}>
@@ -101,11 +101,11 @@ export default function BadgeUnlockModal({ badge, onClose }) {
         {/* Card */}
         <div onClick={e=>e.stopPropagation()}
           style={{
-            background:"linear-gradient(160deg,#1A1A2E 0%,#0F0E17 60%,#150f29 100%)",
-            border:`1px solid ${r.strokeHex}33`,borderRadius:28,
+            background:"linear-gradient(160deg,#ffffff 0%,#f9f9ff 60%,#f0f8ff 100%)",
+            border:`1px solid ${r.strokeHex}22`,borderRadius:28,
             padding:"44px 36px",maxWidth:440,width:"100%",textAlign:"center",
             position:"relative",overflow:"hidden",
-            boxShadow:`0 40px 100px rgba(0,0,0,0.7),0 0 0 1px rgba(255,255,255,0.04),0 0 80px ${r.glowHex}`,
+            boxShadow:`0 20px 60px rgba(0,0,0,0.08),0 0 0 1px rgba(108,99,255,0.1),0 0 40px ${r.glowHex}33`,
             animation:phase>=2?"mCardIn .6s cubic-bezier(0.34,1.56,0.64,1) forwards":"mCardOut .3s ease-in forwards",
             opacity:phase>=2?1:0,
           }}>
@@ -119,18 +119,18 @@ export default function BadgeUnlockModal({ badge, onClose }) {
 
           {/* Close */}
           <button onClick={dismiss}
-            style={{position:"absolute",top:14,right:14,background:"rgba(255,255,255,0.05)",
-              border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,color:"#7B7B9A",
+            style={{position:"absolute",top:14,right:14,background:"rgba(108,99,255,0.08)",
+              border:"1px solid rgba(108,99,255,0.2)",borderRadius:8,color:"#6b7280",
               cursor:"pointer",padding:7,display:"flex",transition:"all .2s"}}
-            onMouseEnter={e=>{e.currentTarget.style.background="rgba(255,255,255,0.1)";e.currentTarget.style.color="#E8E8F0";}}
-            onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.05)";e.currentTarget.style.color="#7B7B9A";}}>
+            onMouseEnter={e=>{e.currentTarget.style.background="rgba(108,99,255,0.15)";e.currentTarget.style.color="#1e1b4b";}}
+            onMouseLeave={e=>{e.currentTarget.style.background="rgba(108,99,255,0.08)";e.currentTarget.style.color="#6b7280";}}>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
 
           {/* Eyebrow */}
           <div style={{fontSize:10,fontWeight:800,letterSpacing:"0.22em",textTransform:"uppercase",
             fontFamily:"'DM Mono',monospace",color:r.strokeHex,marginBottom:8,
-            textShadow:`0 0 16px ${r.strokeHex}66`,position:"relative",zIndex:2}}>
+            textShadow:`0 0 8px ${r.strokeHex}22`,position:"relative",zIndex:2}}>
             ✦ New Badge Unlocked ✦
           </div>
 
@@ -144,12 +144,12 @@ export default function BadgeUnlockModal({ badge, onClose }) {
 
           {/* Text appears at phase 4 */}
           {phase>=4 && <>
-            <h2 style={{color:r.strokeHex,fontSize:24,fontWeight:900,fontFamily:"'DM Sans',sans-serif",
+            <h2 style={{color:"#1e1b4b",fontSize:24,fontWeight:900,fontFamily:"'DM Sans',sans-serif",
               letterSpacing:"-0.02em",marginBottom:8,
-              animation:"mTextIn .5s ease both",textShadow:`0 0 20px ${r.glowHex}`,position:"relative",zIndex:2}}>
+              animation:"mTextIn .5s ease both",textShadow:`0 0 8px ${r.glowHex}22`,position:"relative",zIndex:2}}>
               {badge.name}
             </h2>
-            <p style={{color:"#7B7B9A",fontSize:13,lineHeight:1.65,fontFamily:"'DM Sans',sans-serif",
+            <p style={{color:"#6b7280",fontSize:13,lineHeight:1.65,fontFamily:"'DM Sans',sans-serif",
               margin:"0 auto 22px",maxWidth:320,animation:"mTextIn .5s ease .07s both",position:"relative",zIndex:2}}>
               {badge.description}
             </p>
@@ -171,7 +171,7 @@ export default function BadgeUnlockModal({ badge, onClose }) {
               onMouseLeave={e=>{e.currentTarget.style.transform="";e.currentTarget.style.boxShadow="";}}>
               Awesome! Continue →
             </button>
-            <div style={{marginTop:10,color:"#3D3D5C",fontSize:11,fontFamily:"'DM Mono',monospace",position:"relative",zIndex:2}}>
+            <div style={{marginTop:10,color:"#9ca3af",fontSize:11,fontFamily:"'DM Mono',monospace",position:"relative",zIndex:2}}>
               Tap anywhere or wait to dismiss
             </div>
           </>}
